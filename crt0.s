@@ -28,7 +28,7 @@
 ! Standard MegaDrive ROM header at 0x100
 
         .ascii  "SEGA 32X Anarch "
-        .ascii  "                "
+        .ascii  "GAMEBLABLA      "
         .ascii  "Anarch for 32X  "
         .ascii  "                "
         .ascii  "                "
