@@ -10,7 +10,8 @@ LIBPATH = -L$(ROOTDIR)/sh-elf/lib -L$(ROOTDIR)/sh-elf/lib/gcc/sh-elf/4.5.2 -L$(R
 INCPATH = -I. -I$(ROOTDIR)/sh-elf/include -I$(ROOTDIR)/sh-elf/sh-elf/include
 
 CCFLAGS = -m2 -mb -Ofast -flto -Wall -c -fomit-frame-pointer -fipa-pta
-CCFLAGS += -D__32X__ -DUSE_VOL_ENVELOPE
+CCFLAGS += -D__32X__ -DUSE_VOL_ENVELOPE 
+
 HWFLAGS = -m2 -mb -O1 -Wall -c -fomit-frame-pointer
 LDFLAGS = -T $(LDSCRIPTSDIR)/mars.ld -Wl,-Map=output.map -nostdlib -flto -Wl,--as-needed
 ASFLAGS = --big --defsym LINEAR_CROSSFADE=1
@@ -25,6 +26,13 @@ DD = dd
 RM = rm -f
 
 TARGET = ANARCH32X
+
+ifeq ($(PAL), YES)
+CFLAGS 	+= -DPAL_32X
+TARGET	= ANARCH32X_PAL
+endif
+
+
 LIBS = $(LIBPATH) -lxmp -lc -lgcc -lgcc-Os-4-200 -lnosys
 OBJS = \
 	crt0.o \

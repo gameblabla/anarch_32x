@@ -25,6 +25,12 @@ static uint8_t fgs = 0, bgs = 0;
 
 static uint16_t currentFB = 0;
 
+#ifdef PAL_32X
+#define SCREEN_HEIGHT 240
+#else
+#define SCREEN_HEIGHT 224
+#endif
+
 void Hw32xSetFGColor(int32_t s, int32_t r, int32_t g, int32_t b)
 {
     volatile uint16_t *palette = &MARS_CRAM;
@@ -52,8 +58,11 @@ void Hw32xInit(int32_t vmode)
     if (vmode == MARS_VDP_MODE_256)
     {
         // Set 8-bit paletted mode, 224 lines
+#ifdef PAL_32X
+        MARS_VDP_DISPMODE = MARS_240_LINES | MARS_VDP_MODE_256;
+#else
         MARS_VDP_DISPMODE = MARS_224_LINES | MARS_VDP_MODE_256;
-
+#endif
         // init both framebuffers
 
         // Flip the framebuffer selection bit and wait for it to take effect
@@ -61,7 +70,7 @@ void Hw32xInit(int32_t vmode)
         while ((MARS_VDP_FBCTL & MARS_VDP_FS) == currentFB) ;
         currentFB ^= 1;
         // rewrite line table
-        for (i=0; i<224; i++)
+        for (i=0; i<SCREEN_HEIGHT; i++)
             frameBuffer16[i] = i*160 + 0x100; /* word offset of line */
         // clear screen
         for (i=0x100; i<0x10000; i++)
@@ -72,7 +81,7 @@ void Hw32xInit(int32_t vmode)
         while ((MARS_VDP_FBCTL & MARS_VDP_FS) == currentFB) ;
         currentFB ^= 1;
         // rewrite line table
-        for (i=0; i<224; i++)
+        for (i=0; i<SCREEN_HEIGHT; i++)
             frameBuffer16[i] = i*160 + 0x100; /* word offset of line */
         // clear screen
         for (i=0x100; i<0x10000; i++)
@@ -145,7 +154,7 @@ void Hw32xScreenSetXY(int32_t x, int32_t y)
 void Hw32xScreenClear()
 {
     int32_t i;
-    int32_t l = (init == MARS_VDP_MODE_256) ? 320*224/2 + 0x100 : 320*200 + 0x100;
+    int32_t l = (init == MARS_VDP_MODE_256) ? 320*SCREEN_HEIGHT/2 + 0x100 : 320*200 + 0x100;
     volatile uint16_t *frameBuffer16 = &MARS_FRAMEBUFFER;
 
     // clear screen

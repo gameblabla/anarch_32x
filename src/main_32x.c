@@ -26,9 +26,16 @@
 // #define GAME_LQ
 
 // lower quality
+#ifdef PAL_32X
+#define SFG_FPS 25
+#define SFG_SCREEN_RESOLUTION_X 320
+#define SFG_SCREEN_RESOLUTION_Y 224
+#else
 #define SFG_FPS 20
 #define SFG_SCREEN_RESOLUTION_X 320
 #define SFG_SCREEN_RESOLUTION_Y 192
+#endif
+
 #define SFG_RAYCASTING_SUBSAMPLE 3
 #define SFG_RESOLUTION_SCALEDOWN 2
 #define SFG_DIMINISH_SPRITES 0
@@ -68,10 +75,12 @@ uint32_t ticks = 0;
 
 unsigned short curr_buttons;
 extern char pal[], pal_end[];
-unsigned short curr_buttons;
 
+#ifdef PAL_32X
+vu8 *framebuffer = (vu8* ) &MARS_FRAMEBUFFER + 0x200 + 320*8;
+#else
 vu8 *framebuffer = (vu8* ) &MARS_FRAMEBUFFER + 0x200 + 320*16;
-
+#endif
 
 /*
 * Check the current SEGA Controllers for inputs, update player, direction
