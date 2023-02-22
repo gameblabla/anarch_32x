@@ -1,63 +1,62 @@
-GENDEV=/opt/toolchains/sega
+ifdef $(GENDEV)
 ROOTDIR = $(GENDEV)
-#LDSCRIPTSDIR = $(ROOTDIR)/ldscripts
+else
+ROOTDIR = /opt/toolchains/sega
+endif
 
-SHPREFIX = $(ROOTDIR)/sh-elf/bin/sh-elf-
-MDPREFIX = $(ROOTDIR)/m68k-elf/bin/m68k-elf-
-MDLD = $(MDPREFIX)ld
-MDAS = $(MDPREFIX)as
-SHLD = $(SHPREFIX)ld
-SHCC = $(SHPREFIX)gcc
-SHAS = $(SHPREFIX)as
-SHOBJC = $(SHPREFIX)objcopy
+LDSCRIPTSDIR = $(ROOTDIR)/ldscripts
+
+LIBPATH = -L$(ROOTDIR)/sh-elf/lib -L$(ROOTDIR)/sh-elf/lib/gcc/sh-elf/4.5.2 -L$(ROOTDIR)/sh-elf/sh-elf/lib
+INCPATH = -I. -I$(ROOTDIR)/sh-elf/include -I$(ROOTDIR)/sh-elf/sh-elf/include
+
+CCFLAGS = -m2 -mb -Ofast -flto -Wall -c -fomit-frame-pointer -fipa-pta
+CCFLAGS += -D__32X__ -DUSE_VOL_ENVELOPE
+HWFLAGS = -m2 -mb -O1 -Wall -c -fomit-frame-pointer
+LDFLAGS = -T $(LDSCRIPTSDIR)/mars.ld -Wl,-Map=output.map -nostdlib -flto -Wl,--as-needed
+ASFLAGS = --big --defsym LINEAR_CROSSFADE=1
+
+PREFIX = $(ROOTDIR)/sh-elf/bin/sh-elf-
+CC = $(PREFIX)gcc
+AS = $(PREFIX)as
+LD = $(PREFIX)ld
+OBJC = $(PREFIX)objcopy
+
+DD = dd
 RM = rm -f
 
-CCFLAGS = -m2 -mb -Ofast -Wall -Wformat -c -fomit-frame-pointer
-HWCCFLAGS = -m2 -mb -O1 -Wall -c -fomit-frame-pointer
-LINKFLAGS = -T mars-helloworld.ld -Wl,-Map=output.map -nostdlib
+TARGET = ANARCH32X
+LIBS = $(LIBPATH) -lxmp -lc -lgcc -lgcc-Os-4-200 -lnosys
+OBJS = \
+	crt0.o \
+	src/main_32x.o \
+	src/sound.o \
+	src/hw_32x.o \
+	src/32x_images.o \
+	image.o files.o \
+	music/module_structure.o \
+	music/module_data.o 
 
-INCS = -I. -I$(GENDEV)/sh-elf/include -I$(GENDEV)/sh-elf/sh-elf/include
+all: m68k.bin $(TARGET).bin
 
-LIBS = -L$(GENDEV)/sh-elf/sh-elf/lib -L$(GENDEV)/sh-elf/lib/gcc/sh-elf/4.5.2 -lc -lgcc -lgcc-Os-4-200 -lnosys -lm
+m68k.bin:
+	make -C src-md
 
-OBJS = sh2_crt0.o main.o slave.o hw_32x.o font.o 32x_images.o graphics.o shared_objects.o image.o aplib_decrunch.o
+$(TARGET).bin: $(TARGET).elf
+	$(OBJC) -O binary $< temp.bin
+	$(DD) if=temp.bin of=$@ bs=128K conv=sync
 
-#checks for changes to *.bmp files in images directory
-#http://stackoverflow.com/q/2452634/471658
-BMPFLAG=$(shell ls -l images/*.bmp | md5sum | sed 's/[[:space:]].*//').files
-
-all: m68k_crt0.bin m68k_crt1.bin drawblocks.32x
-
-drawblocks.32x: drawblocks.elf
-	$(SHOBJC) -O binary $< temp.bin
-	dd if=temp.bin of=$@ bs=64K conv=sync
-
-drawblocks.elf: $(OBJS)
-	$(SHCC) $(LINKFLAGS) $(OBJS) $(LIBS) -o drawblocks.elf
-
-m68k_crt0.bin: m68k_crt0.s
-	$(MDAS) -m68000 --register-prefix-optional -o m68k_crt0.o m68k_crt0.s
-	$(MDLD) -T $(GENDEV)/ldscripts/md.ld --oformat binary -o m68k_crt0.bin m68k_crt0.o
-
-m68k_crt1.bin: m68k_crt1.s
-	$(MDAS) -m68000 --register-prefix-optional -o m68k_crt1.o m68k_crt1.s
-	$(MDLD) -T $(GENDEV)/ldscripts/md.ld --oformat binary -o m68k_crt1.bin m68k_crt1.o
+$(TARGET).elf: $(OBJS)
+	$(CC) $(LDFLAGS) $(OBJS) $(LIBS) -o $(TARGET).elf
 
 hw_32x.o: hw_32x.c
-	$(SHCC) $(HWCCFLAGS) $< -o $@
+	$(CC) $(HWFLAGS) $(INCPATH) $< -o $@
 
-main.o: main.c
-	$(SHCC) $(CCFLAGS) $< -o $@
-
-slave.o: slave.c
-	$(SHCC) $(CCFLAGS) $< -o $@
-	
 %.o: %.c
-	$(SHCC) $(CCFLAGS) $< -o $@
+	$(CC) $(CCFLAGS) $(INCPATH) $< -o $@
 
 %.o: %.s
-	$(SHAS) --small -o $@ $<
+	$(AS) $(ASFLAGS) $(INCPATH) $< -o $@
 
-		
 clean:
-	$(RM) *.o *.bin *.elf *.map *prev.bmp *.32x image-encodeX.cmd image_lzss.s *.files image_data.h
+	make clean -C src-md
+	$(RM) music/*.o *.o *.bin *.elf output.map src/*.o

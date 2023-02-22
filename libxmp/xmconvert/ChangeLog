@@ -1,0 +1,41 @@
+2012-08-25 received xmconvert-1.0 - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-08-30 added pruning of repeat instrument data - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-08-30 added restart position to generated rom data - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-08-31 cleaned up h file a little - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-09-09 changed include in output - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-09-09 change u8 to uint8_t in output - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-09-09 added underscore option for labels in output - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-09-09 fixed looping percussion - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-09-09 fixed ping-pong looping - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-09-11 fixed sample sign warning - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-09-11 added pan to sample struct out - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-09-11 fixed vol in wrong place in sample struct out - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-09-12 fixed ping-pong looping (again) - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-09-12 due to ping-pong looping, length fields needed to be 32 bits - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-09-12 fixed empty pattern issue - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-09-12 fixed empty instrument issue - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-09-14 commented out code that killed volume effects - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-09-14 added volume envelope - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-09-15 removed including all samples as a compile option - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-09-15 made volume envelope a switch - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-09-16 added instrument volume fadeout - Chilly Willy<chillywillyguru@gmail.com>

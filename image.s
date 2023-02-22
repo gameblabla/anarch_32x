@@ -1,14 +1,9 @@
 .text
-.globl _title
-.globl _ex
+.globl _terrain
+.globl _terrain_end
 .globl _pal
 .globl _pal_end
 
-
-_title:
-.incbin "sex.apx"
-_ex:
-.incbin "ex.apx"
 _pal:
-.incbin "sex.pal"
+.incbin "assets/anarch_palette.bin"
 _pal_end:

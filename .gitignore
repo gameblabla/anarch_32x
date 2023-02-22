@@ -1,0 +1,8 @@
+*.exe
+*.o
+*.a
+*.bin
+*.32x
+*.map
+*.old
+*.elf

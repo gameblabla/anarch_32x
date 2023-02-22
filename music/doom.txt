@@ -1,0 +1,415 @@
+read xm
+xm id  : Extended Module:
+xm name: facial cum
+xm trkr: FastTracker v2.00   
+xm vers: 0104
+xm head: 276
+xm song: 35
+xm rest: 0
+xm chnl: 4
+xm patt: 24
+xm inst: 10
+xm flag: 1 (Linear)
+xm tmpo: 4
+xm BPM : 120
+
+Order: 0x2 0x3 00 0x1 00 0x1 0x5 0x4 0x6 0x7 0x8 0x7 0x8 0x9 0xa 0x9 0xb 0x2 0xf 0xe 0x10 0xe 0x12 0x11 0x11 0x13 0x14 0x9 0x17 0x9 0x16 0x7 0x8 0x7 0x15 
+
+Packed 815 unpacked 256
+Packed 817 unpacked 256
+Packed 615 unpacked 256
+Packed 656 unpacked 256
+Packed 921 unpacked 256
+Packed 933 unpacked 256
+Packed 855 unpacked 256
+Packed 772 unpacked 256
+Packed 774 unpacked 256
+Packed 805 unpacked 256
+Packed 808 unpacked 256
+Packed 727 unpacked 256
+Packed 870 unpacked 256
+Packed 780 unpacked 256
+Packed 773 unpacked 256
+Packed 642 unpacked 256
+Packed 779 unpacked 256
+Packed 909 unpacked 256
+Packed 777 unpacked 256
+Packed 823 unpacked 256
+Packed 803 unpacked 256
+Packed 620 unpacked 256
+Packed 704 unpacked 256
+Packed 804 unpacked 256
+ins samp: 1
+ins hdln: 263
+ins name: some chippy facials by
+in2 shsz: 40
+in2 nvp : 0
+in2 npp : 0
+in2 vfo : 256
+sam name: chip.bassdrum.c64.wav
+sam leng: 2764
+sam fine: 0
+sam lpln: 0
+sam  pan: 128
+sam reln: 0
+sam type: 00 (if &0x10, 16bit)
+ins samp: 1
+ins hdln: 263
+ins name: good ol' bzl of cro
+in2 shsz: 40
+in2 nvp : 0
+in2 npp : 0
+in2 vfo : 256
+sam name: chip.snare.c64.wav
+sam leng: 4488
+sam fine: 0
+sam lpln: 0
+sam  pan: 128
+sam reln: 0
+sam type: 00 (if &0x10, 16bit)
+ins samp: 1
+ins hdln: 263
+ins name: 
+in2 shsz: 40
+in2 nvp : 0
+in2 npp : 0
+in2 vfo : 256
+sam name: chiplead.pink.wav
+sam leng: 10208
+sam fine: 0
+sam lpln: 9216
+sam  pan: 128
+sam reln: 0
+sam type: 0x1 (if &0x10, 16bit)
+ins samp: 1
+ins hdln: 263
+ins name: weeee, i'm doin'
+in2 shsz: 40
+in2 nvp : 0
+in2 npp : 0
+in2 vfo : 256
+sam name: chipbass.wav
+sam leng: 8160
+sam fine: 0
+sam lpln: 8036
+sam  pan: 128
+sam reln: 0
+sam type: 0x1 (if &0x10, 16bit)
+ins samp: 1
+ins hdln: 263
+ins name: da moneyshot..!
+in2 shsz: 40
+in2 nvp : 0
+in2 npp : 0
+in2 vfo : 256
+sam name: untitled
+sam leng: 0
+sam fine: 0
+sam lpln: 0
+sam  pan: 128
+sam reln: 0
+sam type: 00 (if &0x10, 16bit)
+ins samp: 1
+ins hdln: 263
+ins name: 
+in2 shsz: 40
+in2 nvp : 0
+in2 npp : 0
+in2 vfo : 256
+sam name: untitled
+sam leng: 0
+sam fine: 0
+sam lpln: 0
+sam  pan: 128
+sam reln: 0
+sam type: 00 (if &0x10, 16bit)
+ins samp: 1
+ins hdln: 263
+ins name: 
+in2 shsz: 40
+in2 nvp : 0
+in2 npp : 0
+in2 vfo : 256
+sam name: untitled
+sam leng: 0
+sam fine: 0
+sam lpln: 0
+sam  pan: 128
+sam reln: 0
+sam type: 00 (if &0x10, 16bit)
+ins samp: 1
+ins hdln: 263
+ins name: 
+in2 shsz: 40
+in2 nvp : 0
+in2 npp : 0
+in2 vfo : 256
+sam name: untitled
+sam leng: 0
+sam fine: 0
+sam lpln: 0
+sam  pan: 128
+sam reln: 0
+sam type: 00 (if &0x10, 16bit)
+ins samp: 1
+ins hdln: 263
+ins name: 
+in2 shsz: 40
+in2 nvp : 0
+in2 npp : 0
+in2 vfo : 256
+sam name: untitled
+sam leng: 0
+sam fine: 0
+sam lpln: 0
+sam  pan: 128
+sam reln: 0
+sam type: 00 (if &0x10, 16bit)
+ins samp: 1
+ins hdln: 263
+ins name: 2oo3-o3-13
+in2 shsz: 40
+in2 nvp : 0
+in2 npp : 0
+in2 vfo : 256
+sam name: untitled
+sam leng: 0
+sam fine: 0
+sam lpln: 0
+sam  pan: 128
+sam reln: 0
+sam type: 00 (if &0x10, 16bit)
+read xm
+xm id  : Extended Module:
+xm name: 
+xm trkr: MadTracker 2.0
+xm vers: 0104
+xm head: 276
+xm song: 13
+xm rest: 0
+xm chnl: 4
+xm patt: 11
+xm inst: 17
+xm flag: 1 (Linear)
+xm tmpo: 6
+xm BPM : 125
+
+Order: 0xa 0x1 0x2 0x2 00 0x5 0x4 0x4 0x6 0x6 0x7 0x8 0x8 
+
+Packed 812 unpacked 256
+Packed 944 unpacked 256
+Packed 1151 unpacked 256
+Packed 870 unpacked 256
+Packed 1119 unpacked 256
+Packed 916 unpacked 256
+Packed 1191 unpacked 256
+Packed 1191 unpacked 256
+Packed 999 unpacked 256
+empty pattern... creating empty pattern
+Packed 64 unpacked 256
+Packed 956 unpacked 256
+ins samp: 1
+ins hdln: 263
+ins name: |  -> 17cm
+in2 shsz: 40
+in2 nvp : 6
+in2 npp : 6
+in2 vfo : 0
+sam name: 
+sam leng: 666
+sam fine: 0
+sam lpln: 0
+sam  pan: 128
+sam reln: 0
+sam type: 00 (if &0x10, 16bit)
+ins samp: 1
+ins hdln: 263
+ins name: |
+in2 shsz: 40
+in2 nvp : 6
+in2 npp : 6
+in2 vfo : 0
+sam name: 
+sam leng: 776
+sam fine: 0
+sam lpln: 0
+sam  pan: 128
+sam reln: 0
+sam type: 00 (if &0x10, 16bit)
+ins samp: 1
+ins hdln: 263
+ins name: |  by sinny of
+in2 shsz: 40
+in2 nvp : 6
+in2 npp : 6
+in2 vfo : 0
+sam name: 
+sam leng: 64
+sam fine: 0
+sam lpln: 28
+sam  pan: 128
+sam reln: 0
+sam type: 0x1 (if &0x10, 16bit)
+ins samp: 1
+ins hdln: 263
+ins name: |  bafh & fyllecell
+in2 shsz: 40
+in2 nvp : 6
+in2 npp : 6
+in2 vfo : 0
+sam name: 
+sam leng: 124
+sam fine: 0
+sam lpln: 112
+sam  pan: 128
+sam reln: 0
+sam type: 0x1 (if &0x10, 16bit)
+ins samp: 1
+ins hdln: 263
+ins name: |
+in2 shsz: 40
+in2 nvp : 6
+in2 npp : 6
+in2 vfo : 0
+sam name: 
+sam leng: 40
+sam fine: 0
+sam lpln: 28
+sam  pan: 128
+sam reln: 0
+sam type: 0x1 (if &0x10, 16bit)
+ins samp: 1
+ins hdln: 263
+ins name: |  i love you all.
+in2 shsz: 40
+in2 nvp : 6
+in2 npp : 6
+in2 vfo : 0
+sam name: 
+sam leng: 64
+sam fine: 0
+sam lpln: 28
+sam  pan: 128
+sam reln: 0
+sam type: 0x1 (if &0x10, 16bit)
+ins samp: 1
+ins hdln: 263
+ins name: |
+in2 shsz: 40
+in2 nvp : 6
+in2 npp : 6
+in2 vfo : 0
+sam name: 
+sam leng: 704
+sam fine: 0
+sam lpln: 0
+sam  pan: 128
+sam reln: 0
+sam type: 00 (if &0x10, 16bit)
+ins samp: 1
+ins hdln: 263
+ins name: |  icq: 20535145
+in2 shsz: 40
+in2 nvp : 6
+in2 npp : 6
+in2 vfo : 0
+sam name: 
+sam leng: 64
+sam fine: 0
+sam lpln: 28
+sam  pan: 128
+sam reln: 0
+sam type: 0x1 (if &0x10, 16bit)
+ins samp: 0
+ins hdln: 33
+ins name: 
+ins samp: 1
+ins hdln: 263
+ins name: 
+in2 shsz: 40
+in2 nvp : 6
+in2 npp : 6
+in2 vfo : 0
+sam name: 
+sam leng: 64
+sam fine: 0
+sam lpln: 28
+sam  pan: 128
+sam reln: 0
+sam type: 0x1 (if &0x10, 16bit)
+ins samp: 1
+ins hdln: 263
+ins name: 
+in2 shsz: 40
+in2 nvp : 6
+in2 npp : 6
+in2 vfo : 0
+sam name: 
+sam leng: 40
+sam fine: 0
+sam lpln: 28
+sam  pan: 128
+sam reln: 0
+sam type: 0x1 (if &0x10, 16bit)
+ins samp: 1
+ins hdln: 263
+ins name: 
+in2 shsz: 40
+in2 nvp : 6
+in2 npp : 6
+in2 vfo : 0
+sam name: 
+sam leng: 40
+sam fine: 0
+sam lpln: 28
+sam  pan: 128
+sam reln: 0
+sam type: 0x1 (if &0x10, 16bit)
+ins samp: 1
+ins hdln: 263
+ins name: 
+in2 shsz: 40
+in2 nvp : 6
+in2 npp : 6
+in2 vfo : 0
+sam name: 
+sam leng: 40
+sam fine: 0
+sam lpln: 28
+sam  pan: 128
+sam reln: 0
+sam type: 0x1 (if &0x10, 16bit)
+ins samp: 1
+ins hdln: 263
+ins name: 
+in2 shsz: 40
+in2 nvp : 6
+in2 npp : 6
+in2 vfo : 0
+sam name: 
+sam leng: 40
+sam fine: 0
+sam lpln: 28
+sam  pan: 128
+sam reln: 0
+sam type: 0x1 (if &0x10, 16bit)
+ins samp: 0
+ins hdln: 33
+ins name: 
+ins samp: 0
+ins hdln: 33
+ins name: 
+ins samp: 1
+ins hdln: 263
+ins name: 
+in2 shsz: 40
+in2 nvp : 6
+in2 npp : 6
+in2 vfo : 0
+sam name: 
+sam leng: 64
+sam fine: 0
+sam lpln: 28
+sam  pan: 128
+sam reln: 0
+sam type: 0x1 (if &0x10, 16bit)

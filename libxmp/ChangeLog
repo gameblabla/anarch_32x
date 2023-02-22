@@ -1,0 +1,7 @@
+2012-09-15 v1.0 of code base - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-09-16 added volume fadeout (finally does proper key on/off) - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-09-16 fixed a few places USE_VOL_ENVELOPE should have been - Chilly Willy<chillywillyguru@gmail.com>
+
+2012-09-16 slight fix to setting the mixer length for loops - Chilly Willy<chillywillyguru@gmail.com>

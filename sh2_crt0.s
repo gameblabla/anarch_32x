@@ -10,7 +10,7 @@
 
 ! Standard Mars Header at 0x3C0
 
-        .ascii  "SEX MINIGAME    "              /* module name (16 chars) */
+        .ascii  "MOD Player Test "              /* module name */
         .long   0x00000000                      /* version */
         .long   _stext                          /* Source (in ROM) */
         .long   0x00000000                      /* Destination (in SDRAM) */
@@ -30,9 +30,9 @@
 ! Master Vector Base Table at 0x06000000
 
         .long   mstart      /* Cold Start PC */
-        .long   0x0603F000  /* Cold Start SP 0x0603F000*/
+        .long   0x0603FF00  /* Cold Start SP */
         .long   mstart      /* Manual Reset PC */
-        .long   0x0603F000  /* Manual Reset SP */
+        .long   0x0603FF00  /* Manual Reset SP */
         .long   main_err    /* Illegal instruction */
         .long   0x00000000  /* reserved */
         .long   main_err    /* Invalid slot instruction */
@@ -197,11 +197,6 @@ mcont:
         cmp/eq  r1,r2
         bt      1b
 
-! do all initializers
-        mov.l   _master_do_init,r0
-        jsr     @r0
-        nop
-
 ! let Slave SH2 run
         mov     #0,r1
         mov.l   r1,@(4,r0)  /* clear slave status */
@@ -219,22 +214,14 @@ mcont:
         mov     #0x11,r1
         mov.b   r1,@r0
         mov.l   _master_go,r0
-        jsr     @r0
-        nop
-
-! do all finishers
-        mov.l   _master_do_fini,r0
-        jsr     @r0
-        nop
-2:
-        bra     2b
+        jmp     @r0
         nop
 
         .align   2
 _master_int_clr:
         .long   0x2000401E  /* one word passed last int clr reg */
 _master_stk:
-        .long   0x0603F000  /* Cold Start SP */
+        .long   0x0603FF00  /* Cold Start SP */
 _master_sts:
         .long   0x20004020
 _master_ok:
@@ -250,10 +237,6 @@ _master_bss_start:
         .long   __bss_start
 _master_bss_end:
         .long   __end
-_master_do_init:
-        .long   __INIT_SECTION__
-_master_do_fini:
-        .long   __FINI_SECTION__
 
 scont:
 ! clear interrupt flags
@@ -284,7 +267,7 @@ scont:
         mov     #0x00,r0
         mov.b   r0,@(1,r1)  /* set int enables (different from master despite same address!) */
         mov     #0x20,r0
-        ldc     r0,sr       /* allow ints */
+        ldc     r0,sr       /* IPL = 2 */
 
 ! purge cache, turn it on, and run slave()
         mov.l   _slave_cctl,r0
@@ -445,7 +428,7 @@ main_vres_irq:
 mvri_mars_adapter:
         .long   0x20004000
 mvri_master_stk:
-        .long   0x0603F000  /* Cold Start SP */
+        .long   0x0603FC00  /* Cold Start SP */
 mvri_master_vres:
         .long   main_reset
 
@@ -462,7 +445,7 @@ slav_irq:
 
         stc     sr,r0       /* SR holds IRQ level I3-I0 */
         shlr2   r0
-        and     #0x38,r0
+        and     #0x38,r0    /* I3-I1 */
         cmp/eq  #0x28,r0
         bt      slav_h_irq
         cmp/eq  #0x18,r0
@@ -588,7 +571,6 @@ svri_slave_stk:
 svri_slave_vres:
         .long   slav_reset
 
-
 ! Fast memcpy function - copies longs, runs from sdram for speed
 ! On entry: r4 = dst, r5 = src, r6 = len (in longs)
 
@@ -602,81 +584,7 @@ _fast_memcpy:
         add     #4,r4
         rts
         nop
-		
-! Fast wmemcpy function - copies words, runs from sdram for speed
-! On entry: r4 = dst, r5 = src, r6 = len (in words)
 
-        .align  4
-        .global _fast_wmemcpy
-_fast_wmemcpy:
-        mov.w   @r5+,r3
-        mov.w   r3,@r4
-        dt      r6
-        bf/s    _fast_wmemcpy
-        add     #2,r4
-        rts
-        nop
-		
-		
-
-! void word_8byte_copy(short *dst, short *src, int count)
-        .align  4
-        .global _word_8byte_copy
-_word_8byte_copy:
-        mov.w   @r5+,r0
-        dt      r6
-        mov.w   @r5+,r1
-        !wasted cycle here
-        mov.w   @r5+,r2
-        !wasted cycle here
-        mov.w   @r5+,r3
-        !wasted cycle here
-        mov.w   r0,@r4
-        add     #2,r4
-        mov.w   r1,@r4
-        add     #2,r4
-        mov.w   r2,@r4
-        add     #2,r4
-        mov.w   r3,@r4
-        bf/s    _word_8byte_copy
-        add     #2,r4
-        rts
-        nop 
-		
-! void _word_8byte_copy_bytereverse(short *dst, short *src, int count)
-        .align  4
-        .global _word_8byte_copy_bytereverse
-_word_8byte_copy_bytereverse:
-        mov     r6,r0   !adjust the dst pointer so we start at the end
-        shll2   r0
-        shll    r0
-        add     r0,r4   !dst = dst + count * 8
-1:      mov.w   @r5+,r0
-        dt      r6
-        mov.w   @r5+,r1
-        mov.w   @r5+,r2
-        mov.w   @r5+,r3
-        swap.b  r0,r0
-        mov.w   r0,@-r4
-        swap.b  r1,r1
-        mov.w   r1,@-r4
-        swap.b  r2,r2
-        mov.w   r2,@-r4
-        swap.b  r3,r3
-        bf/s    1b
-        mov.w   r3,@-r4
-        rts
-        nop 		
-
-		
-! int _get_stack_pointer()
-		.align  4
-		.global _get_stack_pointer
-_get_stack_pointer:	
-		mov     r15,r0   !copy stack pointer to return value
-		rts
-		nop
-		
 ! Cache clear line function
 ! On entry: r4 = ptr - should be 16 byte aligned
 
@@ -711,82 +619,210 @@ _CacheControl:
 _sh2_cctl:
         .long   0xFFFFFE92
 
-! void ScreenStretch(int src, int width, int height, int interp);
-! On entry: r4 = src pointer, r5 = width, r6 = height, r7 = interpolate
-
+! void MixSamples(void *mixer, int16_t *buffer, int32_t cnt, int32_t scale);
+! On entry: r4 = mixer pointer
+!           r5 = buffer pointer
+!           r6 = count (number of stereo 16-bit samples)
+!           r7 = scale (global volume - possibly fading, 0 - 64)
         .align  4
-        .global _ScreenStretch
-_ScreenStretch:
-        cmp/pl  r7
-        bt      ss_interp
+        .global _MixSamples
+_MixSamples:
+        mov.l   r8,@-r15
+        mov.l   r9,@-r15
+        mov.l   r10,@-r15
+        mov.l   r11,@-r15
+        mov.l   r12,@-r15
+        mov.l   r13,@-r15
+        mov.l   r14,@-r15
 
-! stretch screen without interpolation
+        mov.l   @r4,r8          /* data pointer */
+        mov.l   @(4,r4),r9      /* position */
+        mov.l   @(8,r4),r10     /* increment */
+        mov.l   @(12,r4),r11    /* length */
+        mov.l   @(16,r4),r12    /* loop_length */
+        mov.w   @(20,r4),r0     /* volume:pan */
 
-0:
-        mov     r5,r3
-        shll    r3
-        mov     r3,r2
-        shll    r2
-        add     r4,r3
-        add     r4,r2
-1:
-        add     #-2,r3
-        mov.w   @r3,r0
-        extu.w  r0,r1
-        shll16  r0
-        or      r1,r0
-        mov.l   r0,@-r2
-        cmp/eq  r3,r4
-        bf      1b
+        /* calculate left/right volumes from volume, pan, and scale */
+        mov     r0,r13
+        shlr8   r13
+        extu.b  r13,r13         /* ch_vol */
+        mov     r13,r14
+        extu.b  r0,r0           /* pan */
 
-        /* next line */
-        mov.w   ss_pitch,r0
+        .ifdef  INTENSITY_CROSSFADE
+        mov     #0xFF,r1
+        extu.b  r1,r1
+        sub     r0,r1           /* 255 - pan */
+        mulu.w  r0,r0
+        sts     macl,r0         /* pan**2 */
+        mulu.w  r0,r14
+        sts     macl,r0         /* pan**2 * ch_vol */
+        mul.l   r0,r7
+        sts     macl,r14        /* pan**2 * ch_vol * scale */
+        shlr16  r14
+!       shlr2   r14
+        shlr2   r14             /* right volume = pan**2 * ch_vol * scale / 256 / 64 / 64 */
+
+        mulu.w  r1,r1
+        sts     macl,r0         /* (255 - pan)**2 */
+        mulu.w  r0,r13
+        sts     macl,r0         /* (255 - pan)**2 * ch_vol */
+        mul.l   r0,r7
+        sts     macl,r13        /* (255 - pan)**2 * ch_vol * scale */
+        shlr16  r13
+!       shlr2   r13
+        shlr2   r13             /* left volume = (255 - pan)**2 * ch_vol * scale / 256 / 64 / 64 */
+        .endif
+
+        .ifdef  LINEAR_CROSSFADE
+        mov     #0xFF,r1
+        extu.b  r1,r1
+        sub     r0,r1           /* 255 - pan */
+        mulu.w  r0,r14
+        sts     macl,r0         /* pan * ch_vol */
+        mul.l   r0,r7
+        sts     macl,r14        /* pan * ch_vol * scale */
+        shlr8   r14
+!       shlr2   r14
+        shlr2   r14             /* right volume = pan * ch_vol * scale / 64 / 64 */
+
+        mulu.w  r1,r13
+        sts     macl,r0         /* (255 - pan) * ch_vol */
+        mul.l   r0,r7
+        sts     macl,r13        /* (255 - pan) * ch_vol * scale */
+        shlr8   r13
+!       shlr2   r13
+        shlr2   r13             /* left volume = (255 - pan) * ch_vol * scale / 64 / 64 */
+        .endif
+
+        .ifdef  EQUAL_DISTANCE_CROSSFADE
+        mov     r0,r1
+        mov.l   edc_left_ptr,r2
+        mov.b   @(r0,r2),r0
+        extu.b  r0,r0           /* epan = edc_left[pan] */
+        mulu.w  r0,r13
+        sts     macl,r0         /* epan * ch_vol */
+        mul.l   r0,r7
+        sts     macl,r13        /* epan * ch_vol * scale */
+        shlr8   r13
+!       shlr2   r13
+        shlr2   r13             /* left volume = epan * ch_vol * scale / 64 / 64 */
+
+        mov     r1,r0
+        mov.l   edc_right_ptr,r2
+        mov.b   @(r0,r2),r1
+        extu.b  r1,r1           /* epan = edc_right[pan] */
+        mulu.w  r1,r14
+        sts     macl,r0         /* epan * ch_vol */
+        mul.l   r0,r7
+        sts     macl,r14        /* epan * ch_vol * scale */
+        shlr8   r14
+!       shlr2   r14
+        shlr2   r14             /* right volume = epan * ch_vol * scale / 64 / 64 */
+        .endif
+
+        /* mix r6 stereo samples */
+mix_loop:
+        /* process one sample */
+        mov     r9,r0
+        shlr8   r0
+        shll2   r0
+        shlr8   r0
+        mov.b   @(r0,r8),r3
+        /* scale sample for left output */
+        muls.w  r3,r13
+        mov.w   @r5,r1
+        sts     macl,r0
+        shlr8   r0
+        exts.w  r0,r0
+        add     r0,r1
+        mov.w   r1,@r5
+        add     #2,r5
+        /* scale sample for right output */
+        muls.w  r3,r14
+        mov.w   @r5,r1
+        sts     macl,r0
+        shlr8   r0
+        exts.w  r0,r0
+        add     r0,r1
+        mov.w   r1,@r5
+        add     #2,r5
+
+        /* advance position and check for loop */
+        add     r10,r9                  /* position += increment */
+mix_chk:
+        cmp/hs  r11,r9
+        bt      mix_wrap                /* position >= length */
+mix_next:
+        /* next sample */
         dt      r6
-        bf/s    0b
-        add     r0,r4
+        bf      mix_loop
+        bra     mix_exit
+        mov.l   r9,@(4,r4)              /* update position field */
+
+mix_wrap:
+        /* check if loop sample */
+        mov     r12,r0
+        cmp/eq  #0,r0
+        bf/s    mix_chk                 /* loop sample */
+        sub     r12,r9                  /* position -= loop_length */
+        /* sample done playing */
+        mov.l   r12,@r4                 /* clear data pointer field */
+
+mix_exit:
+        mov.l   @r15+,r14
+        mov.l   @r15+,r13
+        mov.l   @r15+,r12
+        mov.l   @r15+,r11
+        mov.l   @r15+,r10
+        mov.l   @r15+,r9
+        mov.l   @r15+,r8
         rts
         nop
 
-ss_interp:
+! void LockMixer(int16_t id)
+! Entry: r4 = id
 
-! stretch screen with interpolation
-
+        .global _LockMixer
+_LockMixer:
+        exts.w  r4,r4
+        mov.l   mixer_state,r1
 0:
-        mov     r5,r3
-        shll    r3
-        mov     r3,r2
-        shll    r2
-        add     r4,r3
-        add     r4,r2
-        mov     #0,r7
-1:
-        add     #-2,r3
-        mov.w   @r3,r0
-        mov.w   ss_mask,r1
-        and     r0,r1               /* masked curr pixel */
-        shll16  r0
-        add     r1,r7               /* add to masked prev pixel */
-        shlr    r7                  /* blended pixel */
-        or      r7,r0               /* curr pixel << 16 | blended pixel */
-        mov     r1,r7               /* masked prev pixel = masked curr pixel */
-        mov.l   r0,@-r2
-        cmp/eq  r3,r4
-        bf      1b
+        mov.w   @r1,r0
+        cmp/eq  #1,r0                   /* loop until unlocked */
+        bf      0b
 
-        /* next line */
-        mov.w   ss_pitch,r0
-        dt      r6
-        bf/s    0b
-        add     r0,r4
+        mov.w   r4,@r1
+        mov.w   @r1,r0
+        cmp/eq  r4,r0
+        bf      0b                      /* race condition - we lost */
+
         rts
         nop
 
-ss_mask:
-        .word   0x7BDE
-ss_pitch:
-        .word   640
+! void UnlockMixer(void)
+
+        .global _UnlockMixer
+_UnlockMixer:
+        mov     #1,r0
+        mov.l   mixer_state,r1
+        rts
+        mov.w   r0,@r1
 
         .align  2
+
+        .equ    MARS_SYS_COMM6, 0x20004026
+
+mixer_state:
+        .long   MARS_SYS_COMM6
+
+        .ifdef  EQUAL_DISTANCE_CROSSFADE
+edc_left_ptr:
+        .long   edc_left
+edc_right_ptr:
+        .long   edc_right
+        .include "edc_table.i"
+        .endif
 
         .text
 
