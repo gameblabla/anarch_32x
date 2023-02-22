@@ -10,7 +10,7 @@ The hardware is well suited for this kind of game and it runs... mostly well.
 Untested on real hardware though, because i don't own a real 32X.
 
 I've also ported this game to the Sega Saturn here :
-![https://github.com/gameblabla/anarch_saturn_cart]
+[Saturn port](https://github.com/gameblabla/anarch_saturn_cart)
 
 This port has sound effects as well as music, which is different from the original Anarch
 and were downloaded from ModArchive.
